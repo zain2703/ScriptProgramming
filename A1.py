@@ -77,17 +77,26 @@ print(avg)
 # naming the x axis 
 plt.xlabel('x - axis') 
 # naming the y axis 
-plt.ylabel('y - axis') 
+plt.ylabel('Voltages') 
 # giving a title to my graph 
-plt.title('Two lines on same graph!') 
+plt.title('Pulse of single row!') 
 # printing the field names 
 #x1 = [1,2,3] 
 #y1 = [2,4,1]
-#plt.subplot(2,1,1)
+#plt.subplot(1,2,1)
 plt.plot(t, rf[0], label = "line 1") 
+plt.savefig("Pusle.png")
+plt.show()
 sub(rf,avg)
-#plt.subplot(2,2,2)
+# naming the x axis 
+plt.xlabel('x - axis') 
+# naming the y axis 
+plt.ylabel('Voltages') 
+# giving a title to my graph
+plt.title('After Refactoring!') 
+#plt.subplot(1,2,2)
 plt.plot(t, rf[0], label = "line 2")
+plt.savefig("Refactor.png")
 plt.show()
 #print('Field names are:' + ', '.join(field for field in fields)) 
 
