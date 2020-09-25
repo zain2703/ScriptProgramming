@@ -84,9 +84,9 @@ time_record_approach_2 = []
 time_record_approach_3 = []
 
 # used in 'Extended Tasks'
-all_errors = []
-all_iterations = []
-corresponded_matrix = []
+#all_errors = []
+#all_iterations = []
+#corresponded_matrix = []
 
 for i in range(len(MATRIX_SIZE_N)):
     a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
@@ -129,8 +129,8 @@ for i in range(len(MATRIX_SIZE_N)):
     a_np = np.asarray(a)
     eigenvector_np = np.ones((len(a_np), 1))
 
-    errors_for_each_matrix = []  # used in 'Extended Tasks'
-    iteration_for_each_matrix = []  # used in 'Extended Tasks'
+#    errors_for_each_matrix = []  # used in 'Extended Tasks'
+#    iteration_for_each_matrix = []  # used in 'Extended Tasks'
 
     time3 = time.time()
     iterations_counter = 0
@@ -143,8 +143,8 @@ for i in range(len(MATRIX_SIZE_N)):
         eigenvector_np = new_eigenvector_np
 
         # used in 'Extended Tasks'
-        errors_for_each_matrix.append(difference_np)
-        iteration_for_each_matrix.append(iterations_counter)
+#        errors_for_each_matrix.append(difference_np)
+#        iteration_for_each_matrix.append(iterations_counter)
 
         iterations_counter += 1
         if difference_np < user_specified_tolerance:
@@ -158,9 +158,9 @@ for i in range(len(MATRIX_SIZE_N)):
             time_record_approach_2.append(time4-time3)
 
             # used in 'Extended Tasks'
-            all_errors.append(errors_for_each_matrix)
-            all_iterations.append(iteration_for_each_matrix)
-            corresponded_matrix.append(MATRIX_SIZE_N[i])
+#            all_errors.append(errors_for_each_matrix)
+#            all_iterations.append(iteration_for_each_matrix)
+#            corresponded_matrix.append(MATRIX_SIZE_N[i])
 
             POWER_METHOD_CONVERGENCE = True
             break
@@ -224,21 +224,6 @@ plt.ylabel('Running/Performance time for different approaches measured per secon
 plt.xlabel('Matrix of size N')
 plt.legend(['Approach 1', 'Approach 2', 'Approach 3'])
 plt.savefig("Performance_of_approaches.png")
-
-plt.show()
-plt.clf()
-plt.close()
-
-# ------------------------------------------------------------------------------------------------------
-# Extended Tasks
-plt.subplots(1, figsize=(6, 6))
-plt.loglog(all_iterations[-1], all_errors[-1], '-*')
-plt.title(
-    f"Error decay against number of iterations for matrix size:{corresponded_matrix[-1]}")
-plt.ylabel('Calculated error with user specified error in red')
-plt.xlabel('Number of iterations')
-plt.axhline(y=user_specified_tolerance, color='r', linestyle='--')
-plt.savefig("Error_diagram.png")
 
 plt.show()
 plt.clf()
