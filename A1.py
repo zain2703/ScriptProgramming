@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 ###Assignment1
 import csv
 
@@ -30,7 +29,7 @@ rows = []
 with open(filename, 'r') as csvfile: 
     csvreader = csv.reader(csvfile)
     for i in csvreader:
-#Seperating time step and the readings
+#Question1 Seperating time step and the readings
      fields.append(i[0])
      rows.append(i[2:56])
 
@@ -43,7 +42,14 @@ refactor(rf,rows)
 
 #Question 3 #INitilizing the avg array with zero
 avg=[0 for i in range(r)]
-t= np.arange(0.,54.,1)
+#Question 3 To plot the x-axis 
+t=[]
+t=[0 for x in range(c)]
+for i in range(c):
+  t[i]=i
+#print(i)
+#print(t)
+#t= np.arange(0.,54.,1)
 mean(rf,avg)
 
 # naming the x axis 
