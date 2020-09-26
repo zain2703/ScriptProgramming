@@ -7,14 +7,12 @@ import random
 
 ITERATIONS_UPPER_LIMIT = 10000
 MATRIX_SIZE_N = [x for x in range(100, 2200, 100)]
-TOLERANCE = 10**-6  # Default value
+DefaultTol = 10**-6  # Default value
 POWER_METHOD_CONVERGENCE = False
 
 # Approach 1 – The Power Method with For Loops
 
-
-def matrix_vector_product(matrix, vector):
-
+def VectorProduct(matrix, vector):
     temp = 0
     temp_next_row = []
     method_result = []
@@ -28,14 +26,14 @@ def matrix_vector_product(matrix, vector):
     return method_result
 
 
-def l2_norm_method(vector):
+def L2Norm(vector):
     temp = 0
     for i in range(len(vector)):
         temp += (vector[i][0])**2
     return math.sqrt(temp)
 
 
-def vector_scalar_division(vector, scalar):
+def ScalarDivision(vector, scalar):
     temp = 0
     temp_next_row = []
     method_result = []
@@ -48,7 +46,7 @@ def vector_scalar_division(vector, scalar):
     return method_result
 
 
-def vector_subtraction(vector1, vector2):
+def VectorSubtract(vector1, vector2):
     temp = 0
     temp_next_row = []
     method_result = []
@@ -61,33 +59,33 @@ def vector_subtraction(vector1, vector2):
     return method_result
 
 
-def print_style(strings):
-    print(f'-------------------------------------------------------------------')
+def Print(strings):
+    print('-------------------------------------------------------------------')
     print(strings)
-    print(f'-------------------------------------------------------------------')
+    print('-------------------------------------------------------------------')
+
+#def Approach1():
 
 
 # User input for tolerance
 while True:
     try:
-        user_specified_tolerance = float(
-            input(f'Please enter tolerance in format 0.00...1 or 1e-xx:'))
-        if user_specified_tolerance > 0 and user_specified_tolerance < 1:
+        Tolerance = float(input('Enter tolerance in format 0.00...1='))
+        if Tolerance > 0 and Tolerance < 1:
             break
     except:
-        print(f'no valid number, default (10e⁻6) is considered')
-        user_specified_tolerance = TOLERANCE
+        print('Invalid number default (10e⁻6) tolerane is set')
+        Tolerance = DefaultTol
         break
 
 time_record_approach_1 = []
 time_record_approach_2 = []
 time_record_approach_3 = []
+rows, cols = (3,1)
+Time = [[1]*cols]*rows
 
-# used in 'Extended Tasks'
-#all_errors = []
-#all_iterations = []
-#corresponded_matrix = []
-
+print("Length of Matrix_size =",(len(MATRIX_SIZE_N)))
+print("Matrix =",(MATRIX_SIZE_N))
 for i in range(len(MATRIX_SIZE_N)):
     a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
          for j in range(MATRIX_SIZE_N[i])]
@@ -96,31 +94,32 @@ for i in range(len(MATRIX_SIZE_N)):
     time1 = time.time()
     iterations_counter = 0
     while True:
-        dot_product = matrix_vector_product(a, eigenvector)
-        eigenvalue = l2_norm_method(dot_product)
-        new_eigenvector = vector_scalar_division(dot_product, eigenvalue)
-        difference = l2_norm_method(
-            vector_subtraction(eigenvector, new_eigenvector))
+        dot_product = VectorProduct(a, eigenvector)
+        eigenvalue = L2Norm(dot_product)
+        new_eigenvector = ScalarDivision(dot_product, eigenvalue)
+        difference = L2Norm(
+            VectorSubtract(eigenvector, new_eigenvector))
         eigenvector = new_eigenvector
 
         iterations_counter += 1
-        if difference < user_specified_tolerance:
+        if difference < Tolerance:
             time2 = time.time()
-            print_style(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+            Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                         f'Number of iterations with approach 1: {iterations_counter}\n'
                         f'The l2 norm of difference between last two successive eigenvectors is: {difference}\n'
                         f'Eigenvalue is: {eigenvalue}\n'
-                        # f'Eigenvector is: {eigenvector}\n'
                         f"Running time with 'Approach 1' is:{time2-time1} seconds!")
             time_record_approach_1.append(time2-time1)
+            Time[0].append(time2-time1)
             break
         elif iterations_counter > ITERATIONS_UPPER_LIMIT:
             time2 = time.time()
-            print_style(
+            Print(
                 f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                 f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 1'\n"
                 f"Running time with 'Approach 1' was:{time2-time1} seconds!")
             time_record_approach_1.append(math.nan)
+            Time[0].append(math.nan)
             break
 
 # ------------------------------------------------------------------------------------------------------
@@ -129,48 +128,38 @@ for i in range(len(MATRIX_SIZE_N)):
     a_np = np.asarray(a)
     eigenvector_np = np.ones((len(a_np), 1))
 
-#    errors_for_each_matrix = []  # used in 'Extended Tasks'
-#    iteration_for_each_matrix = []  # used in 'Extended Tasks'
-
     time3 = time.time()
     iterations_counter = 0
     while True:
         dot_product_np = np.dot(a_np, eigenvector_np)
-        # np.linalg.norm(dot_product_np)
-        eigenvalue_np = l2_norm_method(dot_product_np)
+        eigenvalue_np = L2Norm(dot_product_np)
         new_eigenvector_np = dot_product_np / eigenvalue_np
-        difference_np = l2_norm_method(eigenvector_np - new_eigenvector_np)
+        difference_np = L2Norm(eigenvector_np - new_eigenvector_np)
         eigenvector_np = new_eigenvector_np
 
-        # used in 'Extended Tasks'
-#        errors_for_each_matrix.append(difference_np)
-#        iteration_for_each_matrix.append(iterations_counter)
+
 
         iterations_counter += 1
-        if difference_np < user_specified_tolerance:
+        if difference_np < Tolerance:
             time4 = time.time()
-            print_style(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+            Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                         f'Number of iterations with approach 2: {iterations_counter}\n'
                         f'The l2 norm of difference between last two successive eigenvectors is: {difference_np}\n'
                         f'Eigenvalue is: {eigenvalue_np}\n'
-                        # f'Eigenvector is:\n{eigenvector_np}\n'
                         f"Running time with 'Approach 2' is:{time4-time3} seconds!")
             time_record_approach_2.append(time4-time3)
-
-            # used in 'Extended Tasks'
-#            all_errors.append(errors_for_each_matrix)
-#            all_iterations.append(iteration_for_each_matrix)
-#            corresponded_matrix.append(MATRIX_SIZE_N[i])
+            Time[1].append(time4-time3)
 
             POWER_METHOD_CONVERGENCE = True
             break
         elif iterations_counter > ITERATIONS_UPPER_LIMIT:
             time4 = time.time()
-            print_style(
+            Print(
                 f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                 f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 2'\n"
                 f"Running time with 'Approach 2' was:{time4-time3} seconds!")
             time_record_approach_2.append(math.nan)
+            Time[1].append(math.nan)
             break
 
 # ------------------------------------------------------------------------------------------------------
@@ -193,16 +182,15 @@ for i in range(len(MATRIX_SIZE_N)):
         eigenvectors_places = np.where(
             (np.round(eig_vects, 4)) == np.round(eigenvector_np, 4))
 
-        print_style(f'Approach 3:\n'
+        Print(f'Approach 3:\n'
                     f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                     f'The place of biggest eigenvalue:{np.max(only_real_eigenvalues)} in '
                     f'main array result is:{eigenvalue_places[0]}\n'
-                    # f'The place of similar eigenvectors:{eig_vects[eigenvectors_places]} in '
-                    # f'main array result is:{eigenvectors_places[0]}\n'
                     f'Running time with Approach 3 was:{time6-time5} seconds!')
+        Time[2].append(time6-time5)
         time_record_approach_3.append(time6-time5)
     else:
-        print_style(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+        Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                     f'Last calculated eigenvalue with Approach 1: {eigenvalue}\n'
                     f'Last calculated eigenvalue with Approach 2: {eigenvalue_np}\n'
                     f'Real eigenvalues with Approach 3 are:\n{only_real_eigenvalues}\n'
@@ -210,16 +198,25 @@ for i in range(len(MATRIX_SIZE_N)):
                     f"Running time with 'Approach 3' was:{time6-time5} seconds!\n"
                     f'The power method did not converged though!')
         time_record_approach_3.append(math.nan)
-
+        Time[2].append(math.nan)
+Time[0].pop(0)
+Time[1].pop(0)
+Time[2].pop(0)
+print ("Approch1 = ",time_record_approach_1)
+print ("Approch2 = ",time_record_approach_2)
+print ("Approch3 = ",time_record_approach_3)
+print ("The data in first row = ",Time[0])
+print ("The data in second row = ",Time[1])
+print ("The data in third row = ",Time[2])        
 # ------------------------------------------------------------------------------------------------------
 #  Performance characteristics of the approaches and result plotting
 plt.subplots(1, figsize=(7, 7))
-plt.loglog(MATRIX_SIZE_N, time_record_approach_1, '-*')
-plt.loglog(MATRIX_SIZE_N, time_record_approach_2, '-o')
-plt.loglog(MATRIX_SIZE_N, time_record_approach_3, '-d')
+plt.loglog(MATRIX_SIZE_N, Time[0], '-*')
+plt.loglog(MATRIX_SIZE_N, Time[1], '-o')
+plt.loglog(MATRIX_SIZE_N, Time[2], '-d')
 
 plt.title(
-    f"Characteristics of the approaches with tolerance: {user_specified_tolerance}")
+    f"Characteristics of the approaches with tolerance: {Tolerance}")
 plt.ylabel('Running/Performance time for different approaches measured per seconds')
 plt.xlabel('Matrix of size N')
 plt.legend(['Approach 1', 'Approach 2', 'Approach 3'])
