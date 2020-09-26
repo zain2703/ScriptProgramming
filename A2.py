@@ -66,7 +66,6 @@ def Print(strings):
 
 #def Approach1():
 
-
 # User input for tolerance
 while True:
     try:
@@ -82,15 +81,22 @@ time_record_approach_1 = []
 time_record_approach_2 = []
 time_record_approach_3 = []
 rows, cols = (3,1)
-Time = [[1]*cols]*rows
-
+Time = [[0 for i in range(cols)] for j in range(rows)] 
+#Time = [[1]*cols]*rows
+print(Time)
 print("Length of Matrix_size =",(len(MATRIX_SIZE_N)))
 print("Matrix =",(MATRIX_SIZE_N))
 for i in range(len(MATRIX_SIZE_N)):
     a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
          for j in range(MATRIX_SIZE_N[i])]
     eigenvector = [[1] for i in range(len(a))]  # Initial value of eigenvector
-
+    print ("Approch1 = ",time_record_approach_1)
+    print ("Approch2 = ",time_record_approach_2)
+    print ("Approch3 = ",time_record_approach_3)
+    print(Time)
+    print ("The data in first row = ",Time[0])
+    print ("The data in second row = ",Time[1])
+    print ("The data in third row = ",Time[2])      
     time1 = time.time()
     iterations_counter = 0
     while True:
