@@ -2,24 +2,27 @@ import matplotlib.pyplot as plt
 ###Assignment1
 import csv
 
+Volt_Con = (2**10-1)*0.6
+BASELINE =10
+
 #question2 converting reading into voltages
-def refactor(rf,rows):
+def convert_to_volt(rf,rows):
   for i in range(len(rows)):
     for j in range(len(rows[i])):
-        rf[i][j]= int(rows[i][j]) / (2**10-1)*0.6
+        rf[i][j]= float(rows[i][j]) / Volt_Con
 
 #Question3 Compute the mean
 def mean(rf,avg):
    for i in range(len(rows)):
-    for j in range(10):
+    for j in range(BASELINE):
       avg[i]=rf[i][j]+avg[i]
-    avg[i]=avg[i]/10
+    avg[i]=avg[i]/BASELINE
 
 #Question3 subtract the mean
 def sub(rf,avg):
   for i in range(len(rows)):
     for j in range(len(rows[i])):
-      rf[i][j]=avg[i]- rf[i][j]
+      rf[i][j]=rf[i][j] - avg[i] 
 
 
 filename = "pulses.csv"
@@ -36,10 +39,14 @@ with open(filename, 'r') as csvfile:
 r=len(rows)
 c=len(rows[0])
 rf = [[0 for i in range(c)] for j in range(r)]
-
+#print("********************Rows****************************************************")
+#print(rows)
+#print("****************************************************************************")
 #Question 2 #Function to convert reading into Volatges
-refactor(rf,rows)
-
+convert_to_volt(rf,rows)
+#print("********************RF******************************************************")
+#print(rf[0][:5])
+#print("****************************************************************************")
 #Question 3 #INitilizing the avg array with zero
 avg=[0 for i in range(r)]
 #Question 3 To plot the x-axis 
@@ -51,7 +58,10 @@ for i in range(c):
 #print(t)
 #t= np.arange(0.,54.,1)
 mean(rf,avg)
-
+#print("***************************Print Average************************************")
+#print(len(avg))
+#print(avg)
+#print("****************************************************************************")
 # naming the x axis 
 plt.xlabel('x - axis') 
 # naming the y axis 
@@ -67,7 +77,7 @@ plt.xlabel('x - axis')
 # naming the y axis 
 plt.ylabel('Voltages') 
 # giving a title to my graph
-plt.title('After Refactoring!') 
+plt.title('Converted_to_Volatges!') 
 plt.plot(t, rf[0])
 plt.savefig("Refactor.png")
 plt.show()
