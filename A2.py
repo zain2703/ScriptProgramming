@@ -8,7 +8,7 @@ import random
 ITERATIONS_UPPER_LIMIT = 10000
 MATRIX_SIZE_N = [x for x in range(100, 2200, 100)]
 DefaultTol = 10**-6  # Default value
-POWER_METHOD_CONVERGENCE = False
+converge = False
 #Take different time
 rows, cols = (3,1)
 Time = [[0 for i in range(cols)] for j in range(rows)] 
@@ -98,6 +98,37 @@ def Approach1(a):
             Time[0].append(math.nan)
             break
 
+def Approach2(a_np,eigenvector_np,eigenvalue_np):
+    time3 = time.time()
+    iterations_counter = 0
+    while True:
+        dot_product_np = np.dot(a_np, eigenvector_np)
+        eigenvalue_np = L2Norm(dot_product_np)
+        new_eigenvector_np = dot_product_np / eigenvalue_np
+        difference_np = L2Norm(eigenvector_np - new_eigenvector_np)
+        eigenvector_np = new_eigenvector_np
+        iterations_counter += 1
+        if difference_np < Tolerance:
+            converge = True
+            print(converge)
+            time4 = time.time()
+            Print(f'Approach 2:\n'
+                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+                        f'Number of iterations with approach 2: {iterations_counter}\n'
+                        f'The l2 norm of difference between last two successive eigenvectors is: {difference_np}\n'
+                        f'Eigenvalue is: {eigenvalue_np}\n'
+                        f"Running time with 'Approach 2' is:{time4-time3} seconds!")
+            Time[1].append(time4-time3)
+            break
+        elif iterations_counter > ITERATIONS_UPPER_LIMIT:
+            time4 = time.time()
+            Print(
+                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+                f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 2'\n"
+                f"Running time with 'Approach 2' was:{time4-time3} seconds!")
+            Time[1].append(math.nan)
+            break
+    return converge
 
 # User input for tolerance
 while True:
@@ -109,6 +140,9 @@ while True:
         print('Invalid number default (10e⁻6) tolerane is set')
         Tolerance = DefaultTol
         break
+
+###Eigenvalues & Eigenvectors for all aprooaches initlize with zero
+eigenvalue_np=0
 
 #Approach1
 
@@ -122,36 +156,8 @@ for i in range(len(MATRIX_SIZE_N)):
 # To convert existing data to ndarray type
     a_np = np.asarray(a)
     eigenvector_np = np.ones((len(a_np), 1))
-
-    time3 = time.time()
-    iterations_counter = 0
-    while True:
-        dot_product_np = np.dot(a_np, eigenvector_np)
-        eigenvalue_np = L2Norm(dot_product_np)
-        new_eigenvector_np = dot_product_np / eigenvalue_np
-        difference_np = L2Norm(eigenvector_np - new_eigenvector_np)
-        eigenvector_np = new_eigenvector_np
-        iterations_counter += 1
-        if difference_np < Tolerance:
-            time4 = time.time()
-            Print(f'Approach 2:\n'
-                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                        f'Number of iterations with approach 2: {iterations_counter}\n'
-                        f'The l2 norm of difference between last two successive eigenvectors is: {difference_np}\n'
-                        f'Eigenvalue is: {eigenvalue_np}\n'
-                        f"Running time with 'Approach 2' is:{time4-time3} seconds!")
-            Time[1].append(time4-time3)
-
-            POWER_METHOD_CONVERGENCE = True
-            break
-        elif iterations_counter > ITERATIONS_UPPER_LIMIT:
-            time4 = time.time()
-            Print(
-                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 2'\n"
-                f"Running time with 'Approach 2' was:{time4-time3} seconds!")
-            Time[1].append(math.nan)
-            break
+    converge=Approach2(a_np,eigenvector_np,eigenvalue_np)
+    
 
 # ------------------------------------------------------------------------------------------------------
 # Approach 3 – NumPy Implementation
@@ -165,8 +171,8 @@ for i in range(len(MATRIX_SIZE_N)):
 
     only_real_eigenvalues = eig_values[real_eigenvalues_bo]
     only_real_eigenvectors = eig_vects[real_eigenvectors_bo]
-
-    if POWER_METHOD_CONVERGENCE:
+    print(converge)
+    if converge:
 
         eigenvalue_places = np.where(
             (np.round(eig_values, 4)) == np.round(eigenvalue_np, 4))
