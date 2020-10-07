@@ -68,7 +68,7 @@ def Print(strings):
     print(strings)
     print('-------------------------------------------------------------------')
 
-def Approach1(a): 
+def Approach1(a,eigenvalue,eigenvector): 
     eigenvector = [[1] for i in range(len(a))]  # Initial value of eigenvector
     time1 = time.time()
     iterations_counter = 0
@@ -98,7 +98,7 @@ def Approach1(a):
             Time[0].append(math.nan)
             break
 
-def Approach2(a_np,eigenvector_np,eigenvalue_np):
+def Approach2(a_np,eigenvalue_np,eigenvector_np):
     time3 = time.time()
     iterations_counter = 0
     while True:
@@ -129,38 +129,7 @@ def Approach2(a_np,eigenvector_np,eigenvalue_np):
             Time[1].append(math.nan)
             break
     return converge
-
-# User input for tolerance
-while True:
-    try:
-        Tolerance = float(input('Enter tolerance in format 0.00...1='))
-        if Tolerance > 0 and Tolerance < 1:
-            break
-    except:
-        print('Invalid number default (10e⁻6) tolerane is set')
-        Tolerance = DefaultTol
-        break
-
-###Eigenvalues & Eigenvectors for all aprooaches initlize with zero
-eigenvalue_np=0
-
-#Approach1
-
-for i in range(len(MATRIX_SIZE_N)):
-    a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
-         for j in range(MATRIX_SIZE_N[i])]
-    Approach1(a)
-    
-# ------------------------------------------------------------------------------------------------------
-# Approach 2 – The Power Method with NumPy Functions
-# To convert existing data to ndarray type
-    a_np = np.asarray(a)
-    eigenvector_np = np.ones((len(a_np), 1))
-    converge=Approach2(a_np,eigenvector_np,eigenvalue_np)
-    
-
-# ------------------------------------------------------------------------------------------------------
-# Approach 3 – NumPy Implementation
+def Approach3(converge,eigenvalue,eigenvalue_np,only_real_eigenvalues,only_real_eigenvectors):
     time5 = time.time()
     eig_values, eig_vects = np.linalg.eig(a_np)
     time6 = time.time()
@@ -194,6 +163,38 @@ for i in range(len(MATRIX_SIZE_N)):
                     f"Running time with 'Approach 3' was:{time6-time5} seconds!\n"
                     f'The power method did not converged though!')
         Time[2].append(math.nan)
+# User input for tolerance
+while True:
+    try:
+        Tolerance = float(input('Enter tolerance in format 0.00...1='))
+        if Tolerance > 0 and Tolerance < 1:
+            break
+    except:
+        print('Invalid number default (10e⁻6) tolerane is set')
+        Tolerance = DefaultTol
+        break
+
+###Eigenvalues & Eigenvectors for all aprooaches initlize with zero
+eigenvalue=eigenvalue_np=only_real_eigenvalues=0
+eigenvector=eigenvector_np=only_real_eigenvectors=0
+#Approach1
+
+for i in range(len(MATRIX_SIZE_N)):
+    a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
+         for j in range(MATRIX_SIZE_N[i])]
+    Approach1(a,eigenvalue,eigenvector)
+    
+# ------------------------------------------------------------------------------------------------------
+# Approach 2 – The Power Method with NumPy Functions
+# To convert existing data to ndarray type
+    a_np = np.asarray(a)
+    eigenvector_np = np.ones((len(a_np), 1))
+    converge=Approach2(a_np,eigenvalue_np,eigenvector_np)
+    
+###Just create the function to send the data 
+# ------------------------------------------------------------------------------------------------------
+# Approach 3 – NumPy Implementation
+    Approach3(converge,eigenvalue,eigenvalue_np,only_real_eigenvalues,only_real_eigenvectors)
 Time[0].pop(0)
 Time[1].pop(0)
 Time[2].pop(0)      
