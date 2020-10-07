@@ -5,16 +5,13 @@ import matplotlib.pyplot as plt
 import time
 import random
 
-ITERATIONS_UPPER_LIMIT = 10000
+ITERATIONS_LIMIT = 10000
+##21 different size of matrix 
 MATRIX_SIZE_N = [x for x in range(100, 2200, 100)]
-DefaultTol = 10**-6  # Default value
-converge = False
+DefaultTol = 10**-6  # Default value for tolerance
 #Take different time
 rows, cols = (3,1)
 Time = [[0 for i in range(cols)] for j in range(rows)] 
-
-
-# Approach 1 – The Power Method with For Loops
 
 def VectorProduct(matrix, vector):
     temp = 0
@@ -64,106 +61,101 @@ def VectorSubtract(vector1, vector2):
 
 
 def Print(strings):
-    print('-------------------------------------------------------------------')
+    print('*******************************************************************')
     print(strings)
-    print('-------------------------------------------------------------------')
+    print('*******************************************************************')
 
-def Approach1(a,eigenvalue,eigenvector): 
-    eigenvector = [[1] for i in range(len(a))]  # Initial value of eigenvector
+def Approach1(a,Approch1_eigenvalue,Approch1_eigenvector): 
+    Approch1_eigenvector = [[1] for i in range(len(a))]  # Initial value of Approch1_eigenvector
     time1 = time.time()
     iterations_counter = 0
     while True:
-        dot_product = VectorProduct(a, eigenvector)
-        eigenvalue = L2Norm(dot_product)
-        new_eigenvector = ScalarDivision(dot_product, eigenvalue)
-        difference = L2Norm(VectorSubtract(eigenvector, new_eigenvector))
-        eigenvector = new_eigenvector
+        dot_product = VectorProduct(a, Approch1_eigenvector)
+        Approch1_eigenvalue = L2Norm(dot_product)
+        new_eigenvector = ScalarDivision(dot_product, Approch1_eigenvalue)
+        difference = L2Norm(VectorSubtract(Approch1_eigenvector, new_eigenvector))
+        Approch1_eigenvector = new_eigenvector
 
         iterations_counter += 1
         if difference < Tolerance:
             time2 = time.time()
-            Print(f'Approach 1:\n'
-                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+            Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                         f'Number of iterations with approach 1: {iterations_counter}\n'
                         f'The l2 norm of difference between last two successive eigenvectors is: {difference}\n'
-                        f'Eigenvalue is: {eigenvalue}\n'
+                        f'Approch1_eigenvalue is: {Approch1_eigenvalue}\n'
                         f"Running time with 'Approach 1' is:{time2-time1} seconds!")
             Time[0].append(time2-time1)
             break
-        elif iterations_counter > ITERATIONS_UPPER_LIMIT:
+        elif iterations_counter > ITERATIONS_LIMIT:
             Print(
                 f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 1'\n"
+                f"The power method did not converge after:{ITERATIONS_LIMIT} iterations! in 'Approach 1'\n"
                 f"Running time with 'Approach 1' was:{time2-time1} seconds!")
             Time[0].append(math.nan)
             break
 
-def Approach2(a_np,eigenvalue_np,eigenvector_np):
-    time3 = time.time()
+def Approach2(a_np,Approch2_eigenvalue,Approch2_eigenvector):
+    time1 = time.time()
     iterations_counter = 0
     while True:
-        dot_product_np = np.dot(a_np, eigenvector_np)
-        eigenvalue_np = L2Norm(dot_product_np)
-        new_eigenvector_np = dot_product_np / eigenvalue_np
-        difference_np = L2Norm(eigenvector_np - new_eigenvector_np)
-        eigenvector_np = new_eigenvector_np
+        dot_product_np = np.dot(a_np, Approch2_eigenvector)
+        Approch2_eigenvalue = L2Norm(dot_product_np)
+        new_eigenvector_np = dot_product_np / Approch2_eigenvalue
+        difference_np = L2Norm(Approch2_eigenvector - new_eigenvector_np)
+        Approch2_eigenvector = new_eigenvector_np
         iterations_counter += 1
         if difference_np < Tolerance:
             converge = True
-            print(converge)
-            time4 = time.time()
-            Print(f'Approach 2:\n'
-                f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+            time2 = time.time()
+            Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
                         f'Number of iterations with approach 2: {iterations_counter}\n'
                         f'The l2 norm of difference between last two successive eigenvectors is: {difference_np}\n'
-                        f'Eigenvalue is: {eigenvalue_np}\n'
-                        f"Running time with 'Approach 2' is:{time4-time3} seconds!")
-            Time[1].append(time4-time3)
+                        f'Approch1_eigenvalue is: {Approch2_eigenvalue}\n'
+                        f"Running time with 'Approach 2' is:{time2-time1} seconds!")
+            Time[1].append(time2-time1)
             break
-        elif iterations_counter > ITERATIONS_UPPER_LIMIT:
-            time4 = time.time()
+        elif iterations_counter > ITERATIONS_LIMIT:
+            time2 = time.time()
             Print(
                 f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                f"The power method did not converge after:{ITERATIONS_UPPER_LIMIT} iterations! in 'Approach 2'\n"
-                f"Running time with 'Approach 2' was:{time4-time3} seconds!")
+                f"The power method did not converge after:{ITERATIONS_LIMIT} iterations! in 'Approach 2'\n"
+                f"Running time with 'Approach 2' was:{time2-time1} seconds!")
             Time[1].append(math.nan)
             break
     return converge
-def Approach3(converge,eigenvalue,eigenvalue_np,only_real_eigenvalues,only_real_eigenvectors):
-    time5 = time.time()
+
+def Approach3(converge,Approch1_eigenvalue,Approch2_eigenvalue,Approch3_eigenvalue,Approch3_eigenvector):
+    time1 = time.time()
     eig_values, eig_vects = np.linalg.eig(a_np)
-    time6 = time.time()
+    time2 = time.time()
 
     # Returns a bool array, where True if input element is real with no imaginary part
     real_eigenvalues_bo = np.isreal(eig_values)
     real_eigenvectors_bo = np.isreal(eig_vects)
 
-    only_real_eigenvalues = eig_values[real_eigenvalues_bo]
-    only_real_eigenvectors = eig_vects[real_eigenvectors_bo]
-    print(converge)
+    Approch3_eigenvalue = eig_values[real_eigenvalues_bo]
+    Approch3_eigenvector = eig_vects[real_eigenvectors_bo]
     if converge:
 
         eigenvalue_places = np.where(
-            (np.round(eig_values, 4)) == np.round(eigenvalue_np, 4))
-        eigenvectors_places = np.where(
-            (np.round(eig_vects, 4)) == np.round(eigenvector_np, 4))
+            (np.round(eig_values, 4)) == np.round(Approch2_eigenvalue, 4))
 
-        Print(f'Approach 3:\n'
-                    f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                    f'The place of biggest eigenvalue:{np.max(only_real_eigenvalues)} in '
+        Print(      f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
+                    f'The place of biggest Approch1_eigenvalue:{np.max(Approch3_eigenvalue)} in '
                     f'main array result is:{eigenvalue_places[0]}\n'
-                    f'Running time with Approach 3 was:{time6-time5} seconds!')
-        Time[2].append(time6-time5)
+                    f'Running time with Approach 3 was:{time2-time1} seconds!')
+        Time[2].append(time2-time1)
     else:
         Print(f'Number of elements in matrix:{MATRIX_SIZE_N[i]}\n'
-                    f'Last calculated eigenvalue with Approach 1: {eigenvalue}\n'
-                    f'Last calculated eigenvalue with Approach 2: {eigenvalue_np}\n'
-                    f'Real eigenvalues with Approach 3 are:\n{only_real_eigenvalues}\n'
-                    # f'Real eigenvectors with Approach 3 are:\n{only_real_eigenvectors}\n'
-                    f"Running time with 'Approach 3' was:{time6-time5} seconds!\n"
+                    f'Last calculated Approch1_eigenvalue with Approach 1: {Approch1_eigenvalue}\n'
+                    f'Last calculated Approch1_eigenvalue with Approach 2: {Approch2_eigenvalue}\n'
+                    f'Real eigenvalues with Approach 3 are:\n{Approch3_eigenvalue}\n'
+                    f"Running time with 'Approach 3' was:{time2-time1} seconds!\n"
                     f'The power method did not converged though!')
         Time[2].append(math.nan)
-# User input for tolerance
+
+
+# Getting user input for tolerance
 while True:
     try:
         Tolerance = float(input('Enter tolerance in format 0.00...1='))
@@ -175,42 +167,49 @@ while True:
         break
 
 ###Eigenvalues & Eigenvectors for all aprooaches initlize with zero
-eigenvalue=eigenvalue_np=only_real_eigenvalues=0
-eigenvector=eigenvector_np=only_real_eigenvectors=0
+Approch1_eigenvalue=Approch2_eigenvalue=Approch3_eigenvalue=0
+Approch1_eigenvector=Approch2_eigenvector=Approch3_eigenvector=0
+converge = False
 #Approach1
 
 for i in range(len(MATRIX_SIZE_N)):
+    ##Initial value of eigenvector
     a = [[random.random() for i in range(MATRIX_SIZE_N[i])]
          for j in range(MATRIX_SIZE_N[i])]
-    Approach1(a,eigenvalue,eigenvector)
-    
+    print('Approach 1')     
+    Approach1(a,Approch1_eigenvalue,Approch1_eigenvector)  
 # ------------------------------------------------------------------------------------------------------
 # Approach 2 – The Power Method with NumPy Functions
 # To convert existing data to ndarray type
+    print('Approach 2')
     a_np = np.asarray(a)
-    eigenvector_np = np.ones((len(a_np), 1))
-    converge=Approach2(a_np,eigenvalue_np,eigenvector_np)
+    Approch2_eigenvector = np.ones((len(a_np), 1))
+    converge=Approach2(a_np,Approch2_eigenvalue,Approch2_eigenvector)
     
 ###Just create the function to send the data 
 # ------------------------------------------------------------------------------------------------------
 # Approach 3 – NumPy Implementation
-    Approach3(converge,eigenvalue,eigenvalue_np,only_real_eigenvalues,only_real_eigenvectors)
-Time[0].pop(0)
-Time[1].pop(0)
-Time[2].pop(0)      
+    print('Approach 3')
+    Approach3(converge,Approch1_eigenvalue,Approch2_eigenvalue,Approch3_eigenvalue,Approch3_eigenvector)
+   
 # ------------------------------------------------------------------------------------------------------
 #  Performance characteristics of the approaches and result plotting
+##popout the starting values
+Time[0].pop(0)
+Time[1].pop(0)
+Time[2].pop(0)
+
 plt.subplots(1, figsize=(7, 7))
 plt.loglog(MATRIX_SIZE_N, Time[0], '-*')
 plt.loglog(MATRIX_SIZE_N, Time[1], '-o')
 plt.loglog(MATRIX_SIZE_N, Time[2], '-d')
 
 plt.title(
-    f"Characteristics of the approaches with tolerance: {Tolerance}")
-plt.ylabel('Running/Performance time for different approaches measured per seconds')
-plt.xlabel('Matrix of size N')
+    f"Different approaches with tolerance: {Tolerance}")
+plt.ylabel('Performance time for different approaches')
+plt.xlabel('Size of a Matrix N')
 plt.legend(['Approach 1', 'Approach 2', 'Approach 3'])
-plt.savefig("Performance_of_approaches.png")
+plt.savefig("A2.png")
 
 plt.show()
 plt.clf()
