@@ -79,3 +79,37 @@ class Sequence:
             genes_sequence.append(Sequence(genes_length[i]))
         return genes_sequence
 
+
+    # Task 9
+    def compare_sequence(self,given_sequence, splitter):
+        """In This method getting getting a given sequence, spliting it by task 7, comparing it with another sequence by task 5 and
+        then this method return values in this order:
+        1.Length of mismatched genes, "mismatch_indices_in_base"          
+        2.different bases for "genes_length"
+        3. mutations count in each nonsimilar base "counting_base_mutation"
+        4.Total number of different bases by "number_of_different_bases"
+        """
+
+        self_genome_spliter= self.split_sequence(splitter)
+        given_sequence_splitted=given_sequence.split_sequence(splitter)
+
+        #for comparison taking empty arrays
+        mismatch_indices_in_base = []
+        genes_length=[]
+        counting_base_mutation=[]
+        number_of_different_bases=0
+
+        for i in range(len(given_sequence_splitted)):
+            flag_for_matching = given_sequence_splitted[i].matching_sequence(self_genome_spliter[i].bases)
+            if flag_for_matching != -1:
+                mismatch_indices_in_base.append(i)
+                genes_length.append(len(given_sequence_splitted[i].bases))
+                counter = 0
+                for j in range(len(given_sequence_splitted[i].bases)):
+                    if given_sequence_splitted[i].bases[j] != self_genome_spliter[i].bases[j]:
+                        counter=counter +1
+                counting_base_mutation.append(counter)
+            else:
+                continue
+        number_of_different_bases = sum(counting_base_mutation)
+        return len(mismatch_indices_in_base), genes_length, counting_base_mutation, number_of_different_bases
