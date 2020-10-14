@@ -9,18 +9,22 @@ class Sequence:
     def __init__(self, bases):
         # store the bases as an attribute.
         self.bases = bases
+  
     # Task 1
     # This is an example method, it returns the first base.
     def first_base(self):
         # We can access the 'bases' for this instance via 'self'.
         result = self.bases[0]
         return result
+  
     # Task 2
     def bases_in_DNA(self):
         counter = 0
         for base in self.bases:
             counter = counter +1
         return counter
+
+
     # Task 3
     def bool_dna(self):
         flag =True
@@ -36,6 +40,7 @@ class Sequence:
                   flag = False
                   break
         return flag
+
     # Task 4
     def compliment_of_sequence(self):
         replace = ''
@@ -65,3 +70,12 @@ class Sequence:
                         return -1
                 else:
                     return counter + 1
+
+    # Task 7
+    def split_sequence(self, split):
+        genes_length = self.bases.split(split)
+        genes_sequence = []
+        for i in range(len(genes_length)):
+            genes_sequence.append(Sequence(genes_length[i]))
+        return genes_sequence
+
