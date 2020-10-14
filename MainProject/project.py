@@ -43,12 +43,45 @@ print(f'Task 6: Total number of characters in "genome_01" is: {file_genome_01.ba
 #file_genome_02 = read_genome_file('genome_02.dat')
 #print(f'Task 6: Total number of characters in "genome_02" is: {file_genome_01.bases_in_DNA()}') """
 
-Splitter_sequence='ATTTGAAGGTGGG'
+#Splitter_sequence='ATTTGAAGGTGGG'
+Splitter_sequence='AAAAAAAAAATTTTTTTTTT' ##this splitter sequence is most common found in shell task 4
 # Task7
 splitted_genome_01 = file_genome_01.split_sequence(Splitter_sequence) 
 print(f'Task 7: Length of first genes is: {len(splitted_genome_01[0].bases)}')
-print(f'Task 7: Numer of DNA sequence in: {len(splitted_genome_01)}')
+print(f'Task 7: Numer of DNA sequence "genome_01.dat" file: {len(splitted_genome_01)}')
 
 # Task8 
-def 
+def genome_lengths(splitted_genome):
+    genome_length=[]
+    for i in range(len(splitted_genome)):
+        genome_length.append(splitted_genome[i].bases_in_DNA())
+    return genome_length
 
+file_genome01_length = genome_lengths(splitted_genome_01)
+
+#print(file_genome01_length) used this fro debugging
+
+#plotting the 2 subplots one showing number of genes and other showing length of genes
+
+plt.subplots(1,figsize=(10,4), sharey=True, tight_layout=True)
+#Subplot 1
+plt.subplot(1,2,1)
+n, bins, patches = plt.hist(file_genome01_length,color='r', rwidth=0.8, alpha=0.75)
+#plt.title("Genes status in genome_01 file")
+plt.xlabel("Length of genes")
+plt.ylabel("Number of genes")
+plt.grid(True)
+
+#Subplot 2
+plt.subplot(1,2,2)
+plt.plot(file_genome01_length, color='r', linewidth=0.8)
+plt.scatter(range(len(file_genome01_length)),file_genome01_length, color='b')
+
+plt.xlabel("Genes")
+plt.ylabel("No of genes")
+plt.grid(True)
+
+#saving data in files
+plt.savefig("Task8.png")
+plt.show()
+plt.close()
