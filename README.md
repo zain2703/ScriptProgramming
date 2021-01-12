@@ -8,4 +8,12 @@ Different techniques applied to get a sequence of data and split different genes
  
 ![alt text](https://github.com/zain2703/ScriptProgramming/blob/master/DNA%20Sequence%20Analysis/Task8.png?raw=true)
 
+Also analysed numer of bases of swapped mutation using scatter plots.
+
+![alt text](https://github.com/zain2703/ScriptProgramming/blob/master/DNA%20Sequence%20Analysis/Task9.png?raw=true)
+
+Using linear regression to find the line best fit for the swapped mutation using different RMS
+
+![alt text](https://github.com/zain2703/ScriptProgramming/blob/master/DNA%20Sequence%20Analysis/Task10.png?raw=true)
+
 
