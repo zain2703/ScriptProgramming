@@ -12,7 +12,7 @@ Also analysed numer of bases of swapped mutation using scatter plots.
 
 ![alt text](https://github.com/zain2703/ScriptProgramming/blob/master/DNA%20Sequence%20Analysis/Task9.png?raw=true)
 
-Using linear regression to find the line best fit for the swapped mutation using different RMS
+Using linear regression to find the line best fit for the swapped mutation using different RMSD
 
 ![alt text](https://github.com/zain2703/ScriptProgramming/blob/master/DNA%20Sequence%20Analysis/Task10.png?raw=true)
 
